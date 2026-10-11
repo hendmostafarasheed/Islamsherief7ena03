@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100817">
+<title>Islam Sherif — Henna Ceremony</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#08050c;color:#fff;font-family:Georgia,serif}
+body{overflow:hidden;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:min(100vw,66.6667dvh);height:min(150vw,100dvh);aspect-ratio:2/3;overflow:hidden;background:#100817;isolation:isolate}
+.page{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .65s ease}
+.page.active{opacity:1;visibility:visible}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block}
+.shimmer{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(115deg,transparent 34%,rgba(255,255,255,.04) 43%,rgba(255,255,255,.34) 49%,rgba(203,154,255,.1) 53%,transparent 62%);background-size:230% 100%;animation:shine 4.8s linear infinite}
+@keyframes shine{0%{background-position:150% 0}100%{background-position:-80% 0}}
+.sparkles,.petals{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.spark{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 5px 2px rgba(255,255,255,.75),0 0 13px 4px rgba(194,137,255,.5);animation:twinkle var(--dur,3s) ease-in-out infinite;opacity:0}
+.spark:after{content:"";position:absolute;width:24px;height:1px;left:-11px;top:1px;background:linear-gradient(90deg,transparent,#fff,transparent);transform:rotate(-25deg)}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4)}45%{opacity:.95;transform:scale(1.2)}60%{opacity:.18;transform:scale(.7)}}
+.petal{position:absolute;top:-8%;width:13px;height:21px;border-radius:90% 10% 85% 15%;background:linear-gradient(135deg,rgba(211,157,255,.06),rgba(139,40,196,.55),rgba(70,10,104,.16));border:1px solid rgba(221,185,255,.24);animation:fall var(--fall,12s) linear infinite;opacity:0}
+@keyframes fall{0%{transform:translate3d(0,-5vh,0) rotate(0);opacity:0}10%{opacity:.6}80%{opacity:.45}100%{transform:translate3d(var(--drift,60px),110vh,0) rotate(500deg);opacity:0}}
+.hotspot{position:absolute;z-index:10;display:block;border:0;background:rgba(255,255,255,0);cursor:pointer;border-radius:50%;padding:0;-webkit-tap-highlight-color:transparent}
+.hotspot:focus-visible{outline:2px solid #e6c8ff;outline-offset:2px}
+#openBtn{left:31%;top:60%;width:38%;height:18%}
+/* These hotspots align with the four silver buttons in the second artwork. */
+#locationBtn{left:6%;top:61%;width:22%;height:14%}
+#rsvpBtn{left:28%;top:61%;width:22%;height:14%}
+#shareBtn{left:50%;top:61%;width:22%;height:14%}
+#photosBtn{left:72%;top:61%;width:22%;height:14%}
+#musicToggle{position:absolute;right:8px;top:8px;z-index:30;border:1px solid rgba(228,199,255,.7);color:#fff;background:rgba(20,8,30,.78);border-radius:24px;padding:8px 11px;font:12px Arial,sans-serif}
+#status{position:absolute;left:50%;bottom:7px;transform:translateX(-50%);z-index:30;color:rgba(255,255,255,.85);font:10px Arial,sans-serif;white-space:nowrap;text-shadow:0 1px 6px #000;max-width:95%;overflow:hidden}
+.modal{position:absolute;inset:0;z-index:25;background:rgba(8,3,14,.94);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-card{width:100%;max-height:90%;overflow:auto;border:1px solid #a879d1;border-radius:18px;padding:16px;background:linear-gradient(145deg,#21112e,#09060e);text-align:center}
+.modal-card h2{font-size:20px;margin:0 0 12px}
+.modal-card p{font:14px/1.5 Arial,sans-serif;color:#eee}
+.modal-card input{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #9b75b7;background:#fff;color:#111;font-size:16px}
+.action{border:1px solid #c5a0e4;background:#28143a;color:white;border-radius:20px;padding:10px 14px;margin:5px;font-size:14px}
+.gallery img{width:100%;display:block;border-radius:8px;margin:8px 0}
+@media(prefers-reduced-motion:reduce){.spark,.petal,.shimmer{animation-duration:20s}}
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Interactive henna invitation">
+<section class="page active" id="page1" aria-label="Invitation cover">
+<img class="art" src="invitation-cover.png" alt="Henna ceremony invitation for Islam Sherif">
+<div class="shimmer"></div><div class="sparkles"></div><div class="petals"></div>
+<button class="hotspot" id="openBtn" aria-label="Open invitation" title="Open invitation"></button>
+</section>
+<section class="page" id="page2" aria-label="Invitation details">
+<img class="art" src="invitation-details.png" alt="Henna ceremony details and interactive buttons">
+<div class="shimmer"></div><div class="sparkles"></div><div class="petals"></div>
+<button class="hotspot" id="locationBtn" aria-label="Open location in Google Maps" title="Location"></button>
+<button class="hotspot" id="rsvpBtn" aria-label="Confirm attendance" title="Confirm attendance"></button>
+<button class="hotspot" id="shareBtn" aria-label="Share invitation" title="Share invitation"></button>
+<button class="hotspot" id="photosBtn" aria-label="Open henna photos" title="Photos"></button>
+</section>
+<button id="musicToggle" type="button">♫ Music</button>
+<div id="status" aria-live="polite">Tap “Open Invitation” to continue</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Invitation action">
+<div class="modal-card" id="modalContent"></div>
+</div>
+<audio id="music" preload="auto" loop src="background-music.mp3"></audio>
+</main>
+<script>
+const MAPS_QUERY='Hilton Hotel Ballroom (A)';
+const INVITATION_URL=location.href;
+const page1=document.getElementById('page1'),page2=document.getElementById('page2');
+const music=document.getElementById('music'),statusEl=document.getElementById('status');
+const modal=document.getElementById('modal'),modalContent=document.getElementById('modalContent');
+function decorate(root){
+ const sw=root.querySelector('.sparkles'),pw=root.querySelector('.petals');
+ for(let i=0;i<36;i++){const s=document.createElement('i');s.className='spark';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--dur',2+Math.random()*4+'s');s.style.animationDelay=-Math.random()*6+'s';sw.appendChild(s)}
+ for(let i=0;i<12;i++){const p=document.createElement('i');p.className='petal';p.style.left=Math.random()*100+'%';p.style.setProperty('--fall',10+Math.random()*12+'s');p.style.setProperty('--drift',(-90+Math.random()*180)+'px');p.style.animationDelay=-Math.random()*20+'s';pw.appendChild(p)}
+}
+document.querySelectorAll('.page').forEach(decorate);
+function showModal(title,body,buttons=''){modalContent.innerHTML='<h2>'+title+'</h2>'+body+buttons+'<div><button class="action" id="closeModal">Close</button></div>';modal.classList.add('show');document.getElementById('closeModal').onclick=()=>modal.classList.remove('show')}
+document.getElementById('openBtn').addEventListener('click',async()=>{
+ page1.classList.remove('active');page2.classList.add('active');statusEl.textContent='Henna ceremony details';
+ try{await music.play();document.getElementById('musicToggle').textContent='♫ Music on'}catch(e){statusEl.textContent='Tap Music to start the soundtrack'}
+});
+document.getElementById('locationBtn').addEventListener('click',()=>{
+ location.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(MAPS_QUERY);
+});
+document.getElementById('rsvpBtn').addEventListener('click',()=>{
+ showModal('Confirm attendance',
+ '<p>Enter the event host’s WhatsApp number with country code to send your RSVP.</p><input id="waNumber" type="tel" inputmode="tel" placeholder="Example: 2010XXXXXXXX"><input id="guestName" type="text" placeholder="Your name (optional)">',
+ '<button class="action" id="sendRSVP">Continue to WhatsApp</button>');
+ document.getElementById('sendRSVP').onclick=()=>{
+  const num=document.getElementById('waNumber').value.replace(/\D/g,'');
+  const name=document.getElementById('guestName').value.trim();
+  if(!num){alert('Please enter the host WhatsApp number first.');return}
+  const msg='Hello, I would like to confirm my attendance at Islam Sherif’s Henna Ceremony.'+(name?' My name is '+name+'.':'');
+  location.href='https://wa.me/'+num+'?text='+encodeURIComponent(msg);
+ };
+});
+document.getElementById('shareBtn').addEventListener('click',async()=>{
+ try{
+  if(navigator.share){await navigator.share({title:'Islam Sherif — Henna Ceremony',text:'You are invited to Islam Sherif’s Henna Ceremony!',url:INVITATION_URL})}
+  else if(navigator.clipboard && location.protocol==='https:'){await navigator.clipboard.writeText(INVITATION_URL);statusEl.textContent='Invitation link copied to clipboard'}
+  else{showModal('Share invitation','<p>Copy this invitation link and send it to your guests.</p><input id="shareLink" readonly value="'+INVITATION_URL.replace(/"/g,'&quot;')+'">','<button class="action" id="copyLink">Select link</button>');document.getElementById('copyLink').onclick=()=>{const el=document.getElementById('shareLink');el.select();el.setSelectionRange(0,99999)}}
+ }catch(e){}
+});
+document.getElementById('photosBtn').addEventListener('click',()=>{
+ showModal('Henna photos','<p>The invitation designs are shown below. To connect your real event album, paste its public Google Photos or Drive link.</p><div class="gallery"><img src="invitation-cover.png" alt="Invitation cover"><img src="invitation-details.png" alt="Invitation details"></div><input id="albumLink" type="url" placeholder="https://photos.app.goo.gl/...">','<button class="action" id="openAlbum">Open photo album</button>');
+ document.getElementById('openAlbum').onclick=()=>{const link=document.getElementById('albumLink').value.trim();if(/^https?:\/\//i.test(link)){location.href=link}else{alert('Enter a full public album link starting with https://.')}}; 
+});
+document.getElementById('musicToggle').addEventListener('click',async()=>{
+ if(music.paused){try{await music.play();document.getElementById('musicToggle').textContent='♫ Music on'}catch(e){statusEl.textContent='Tap again to allow music playback'}}
+ else{music.pause();document.getElementById('musicToggle').textContent='♫ Music off'}
+});
+</script>
+</main>
+</body>
+</html>
